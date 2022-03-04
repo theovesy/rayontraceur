@@ -13,6 +13,31 @@ const double pi = 3.1415926535897932385;
 
 // Utility
 
+struct Timer
+{
+    std::string name;
+    std::chrono::time_point<std::chrono::steady_clock> start, end;
+    std::chrono::duration<float> duration;
+
+    Timer()
+        : name("Timer"), start(std::chrono::steady_clock::now())
+    {
+    }
+
+    Timer(const std::string& name)
+        : name(name), start(std::chrono::steady_clock::now())
+    {
+    }
+
+    ~Timer()
+    {
+        end = std::chrono::steady_clock::now();
+        duration = end-start;
+
+        std::cerr << name << " took " << duration.count() << "s" << std::endl;
+    }
+};
+
 inline double deg_to_rad(double deg)
 {
     return deg * pi / 180;
