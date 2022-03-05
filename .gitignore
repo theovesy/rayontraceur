@@ -2,4 +2,6 @@
 build/
 
 image.bmp
+src/image.cpp
 run
+
