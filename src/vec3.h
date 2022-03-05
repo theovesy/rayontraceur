@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "utils.h"
 
 using std::sqrt;
 

@@ -9,7 +9,7 @@
 #include "sphere.h"
 #include "camera.h"
 #include "material.h"
-
+#include "image.h"
 
 color ray_color(const ray& r, const hittable& world, int depth) 
 {
@@ -40,7 +40,7 @@ int main()
     // Image
     const auto aspect_ratio = 16.0/9.0;
     const int image_width = 400;
-    const int image_height = static_cast<int>(image_width / aspect_ratio);
+    const int image_height = image_width / aspect_ratio;
     const int samples_per_pixel = 100;
     const int max_depth = 50;
 
@@ -60,9 +60,10 @@ int main()
     // Camera
     camera cam(aspect_ratio, 2.0, 1.0);
 
-    // Render
+    // Output image
+    Image image(image_width, image_height);
 
-    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    // Render
 
     for (int j = image_height-1; j>=0 ; j--)
     {
@@ -78,9 +79,14 @@ int main()
                 ray r = cam.get_ray(u, v);
                 pixel_color += ray_color(r, world, max_depth);
             }
-            write_color(std::cout, pixel_color, samples_per_pixel);
+
+            color* new_pixel = better_colors_thanks(pixel_color, samples_per_pixel);
+            image.set_color(*new_pixel, i, j); 
+            delete new_pixel;
         }
     }
 
     std::cerr << std::endl << "Done." << std::endl;
+    
+    image.export_image("output.bmp");
 }
